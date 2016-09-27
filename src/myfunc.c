@@ -122,7 +122,7 @@ static int checkFile() {
 	FILE *fp = NULL;
 	if ((fp=fopen(dataFile, "rb")) == NULL)
 		goto fileError;
-	if (fread(buf, 16, 1, fp)<1 || memcmp(buf, "HUST", 4)!=0) {
+	if (fread(buf, 16, 1, fp)<1 || memcmp(buf, "HUST", 4)!=0 || memcmp(buf, "RPLK", 4)!=0) {
 		fclose(fp);
 		goto fileError;
 	}
@@ -139,7 +139,7 @@ static int checkFile() {
 
 fileError:
 	if (dataFile[strlen(dataFile)-1] != '/')
-		printf(_("!! 所选文件%s无效，改用内置数据认证。\n"), dataFile);
+		printf(_("!! 所选文件%s无效checkFile，改用内置数据认证。\n"), dataFile);
 	return -1;
 }
 
@@ -380,7 +380,7 @@ static int readPacket(int type)
 	return 0;
 
 fileError:
-	printf(_("!! 所选文件%s无效，改用内置数据认证。\n"), dataFile);
+	printf(_("!! 所选文件%s无效readPacket，改用内置数据认证。\n"), dataFile);
 	bufType -= 2;
 	if (bufType==1 && fillSize<0x1f7) {
 		free(fillBuf);
